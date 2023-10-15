@@ -1,12 +1,10 @@
 <template>
-  <div
-    class="p-12 bg-gray-100 w-full h-full min-h-screen flex flex-col items-center"
-  >
+  <div>
     <div class="prose mb-12">
       <h1>
         <span class="font-medium">
-          Course:
-          <span class="font-bold">Mastering Nuxt 3</span>
+          
+          <span class="font-bold">{{ title }}</span>
         </span>
       </h1>
     </div>
@@ -44,7 +42,23 @@
       <div
         class="prose p-12 bg-white rounded-md w-[65ch]"
       >
+      <NuxtErrorBoundary>
         <NuxtPage />
+        <template #error="{ error }">
+         <p> oh no, something broke!
+          <code>{{ error }}</code>
+
+         </p>
+         <p>
+          <button class="hover:cursor-pointer bg-gray-500 text-white font-bold px-3 rounded"
+          @click="resetError(error)">
+          Resetta l'errore.
+          </button>
+         </p>
+        
+        </template>
+      </NuxtErrorBoundary>
+        
       </div>
     </div>
   </div>
@@ -52,7 +66,14 @@
 
 <script setup>
 
-const { chapters } = useCourse();
+const { chapters, title } = useCourse();
+
+const resetError = async (error) => {
+  await navigateTo(
+    '/course/chapter/1-chapter-1/lesson/2-typescript-in-vue-components'
+  );
+  error.value = null;
+};
 
 
 </script>
